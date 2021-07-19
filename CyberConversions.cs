@@ -17,6 +17,8 @@ namespace Simulator.Bridge.Cyber
 {
     static class CyberConversions
     {
+        private static bool laserScanErrorDisplayed;
+
         static byte[] ActualBytes(byte[] array, int length)
         {
             byte[] result = new byte[length];
@@ -94,6 +96,19 @@ namespace Simulator.Bridge.Cyber
             };
 
             return msg;
+        }
+
+        public static apollo.drivers.PointCloud ConvertFrom(LaserScanData laserData)
+        {
+            // CyberRT doesn't have LaserScan message type. Display warning and treat as PointCloud.
+            if (!laserScanErrorDisplayed)
+            {
+                laserScanErrorDisplayed = true;
+                Debug.LogError($"CyberRT doesn't support {nameof(LaserScanData)} type. {nameof(apollo.drivers.PointCloud)} will be used instead.");
+            }
+
+            var data = laserData.ConvertToPointCloudData();
+            return ConvertFrom(data);
         }
 
         public static apollo.perception.TrafficLightDetection ConvertFrom(SignalDataArray data)

@@ -18,6 +18,7 @@ namespace Simulator.Bridge.Cyber
         public void Register(IBridgePlugin plugin)
         {
             RegPublisher<ImageData, apollo.drivers.CompressedImage>(plugin, CyberConversions.ConvertFrom);
+            RegPublisher<LaserScanData, apollo.drivers.PointCloud>(plugin, CyberConversions.ConvertFrom);
             RegPublisher<PointCloudData, apollo.drivers.PointCloud>(plugin, CyberConversions.ConvertFrom);
             RegPublisher<Detected3DObjectData, apollo.perception.PerceptionObstacles>(plugin, CyberConversions.ConvertFrom);
             RegPublisher<Detected2DObjectData, apollo.common.Detection2DArray>(plugin, CyberConversions.ConvertFrom);
